@@ -1,5 +1,6 @@
 import multer from 'multer';
 import crypto from 'crypto';
+// pay close atention to names, all lowercase
 import { extname, resolve } from 'path';
 
 export default {
