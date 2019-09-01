@@ -1,5 +1,5 @@
 import express from 'express';
-
+import * as Sentry from '@sentry/node';
 import path from 'path';
 import routes from './routes';
 
