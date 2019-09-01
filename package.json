@@ -15,6 +15,7 @@
     "bee-queue": "^1.2.2",
     "date-fns": "^2.0.0-beta.5",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
     "express-handlebars": "^3.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.6.11",
@@ -25,6 +26,7 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.16.0",
     "sequelize-cli": "^5.5.0",
+    "youch": "^2.0.10",
     "yup": "^0.27.0"
   },
   "devDependencies": {
