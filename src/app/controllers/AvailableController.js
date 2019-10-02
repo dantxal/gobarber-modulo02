@@ -31,8 +31,8 @@ class AvailableController {
     });
 
     const schedule = [
-      '8:00',
-      '9:00',
+      '08:00',
+      '09:00',
       '10:00',
       '11:00',
       '12:00',
@@ -54,6 +54,7 @@ class AvailableController {
       /**
        * check if time is in the past
        */
+
       /**
        * Check if there is already an appointment at that time
        */
