@@ -4,6 +4,7 @@ import File from '../models/File';
 
 import CreateAppointmentService from '../services/CreateAppointmentService';
 import CancelAppointmentService from '../services/CancelAppointmentService';
+import Cache from '../../lib/Cache';
 
 class AppointmentController {
   async store(req, res) {
@@ -20,6 +21,12 @@ class AppointmentController {
 
   async index(req, res) {
     const { page = 1 } = req.query;
+
+    const cacheKey = `user:${req.userId}:appointments:${page}`;
+
+    const cached = await Cache.get(cacheKey);
+    if (cached) return res.json(cached);
+
     const appointments = await Appointment.findAll({
       where: { user_id: req.userId, canceled_at: null },
       attributes: ['id', 'date', 'past', 'cancelable'],
@@ -42,11 +49,13 @@ class AppointmentController {
       ],
     });
 
+    await Cache.set(cacheKey, appointments);
+
     return res.json(appointments);
   }
 
   async delete(req, res) {
-    const appointment = CancelAppointmentService.run({
+    const appointment = await CancelAppointmentService.run({
       appointment_id: req.params.id,
       user_id: req.userId,
     });

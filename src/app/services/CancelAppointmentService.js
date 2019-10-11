@@ -4,7 +4,9 @@ import User from '../models/User';
 import Appointment from '../models/Appointment';
 
 import CancellationMail from '../jobs/CancellationMail';
+
 import Queue from '../../lib/Queue';
+import Cache from '../../lib/Cache';
 
 class CancelAppointmentService {
   async run({ appointment_id, user_id }) {
@@ -23,6 +25,10 @@ class CancelAppointmentService {
       ],
     });
 
+    if (appointment.canceled_at) {
+      throw new Error('Appointment already canceled!');
+    }
+
     if (appointment.user_id !== user_id) {
       throw new Error("You don't have permission to cancel this appointment.");
     }
@@ -37,6 +43,11 @@ class CancelAppointmentService {
     await appointment.save();
 
     await Queue.add(CancellationMail.key, { appointment });
+
+    /**
+     * Invalidate cache
+     */
+    await Cache.invalidatePrefix(`user:${user_id}:appointments`);
 
     return appointment;
   }
